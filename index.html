@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Local Grocery Macro Meal Planner</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="planner">
+        <div class="planner__header">
+          <div>
+            <p class="eyebrow">Offline prototype</p>
+            <h1>Local grocery macro meal planner</h1>
+            <p>
+              Build 3-7 day meal-prep plans from your stats, food preferences,
+              nearby grocery options, mock inventory, and deterministic macro math.
+            </p>
+          </div>
+          <div class="status-pill" id="inventoryMode">Availability not verified</div>
+        </div>
+
+        <form id="plannerForm" class="wizard">
+          <section class="panel">
+            <div class="section-title">
+              <span>1</span>
+              <div>
+                <h2>Body stats and goal</h2>
+                <p>Used only for estimated calorie and macro targets.</p>
+              </div>
+            </div>
+            <div class="grid grid-4">
+              <label>
+                Age
+                <input name="age" type="number" min="18" max="100" value="32" required />
+              </label>
+              <label>
+                Biological sex
+                <select name="biologicalSex">
+                  <option value="unspecified">Unspecified</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </label>
+              <label>
+                Height
+                <div class="input-row">
+                  <input name="heightCm" type="number" min="120" max="230" value="178" required />
+                  <span>cm</span>
+                </div>
+              </label>
+              <label>
+                Weight
+                <div class="input-row">
+                  <input name="weightKg" type="number" min="35" max="250" value="82" required />
+                  <span>kg</span>
+                </div>
+              </label>
+              <label>
+                Activity
+                <select name="activityLevel">
+                  <option value="sedentary">Sedentary</option>
+                  <option value="light">Light</option>
+                  <option value="moderate" selected>Moderate</option>
+                  <option value="very_active">Very active</option>
+                  <option value="athlete">Athlete</option>
+                </select>
+              </label>
+              <label>
+                Goal
+                <select name="goal">
+                  <option value="cut">Cut</option>
+                  <option value="maintain">Maintain</option>
+                  <option value="lean_bulk" selected>Lean bulk</option>
+                  <option value="bulk">Bulk</option>
+                </select>
+              </label>
+              <label>
+                Rate
+                <select name="targetRate">
+                  <option value="slow">Slow</option>
+                  <option value="standard" selected>Standard</option>
+                  <option value="aggressive">Aggressive</option>
+                </select>
+              </label>
+              <label>
+                Meals per day
+                <input name="mealsPerDay" type="number" min="3" max="5" value="4" />
+              </label>
+              <label>
+                Planning days
+                <input name="planningDays" type="number" min="1" max="7" value="4" />
+              </label>
+              <label>
+                Calorie override
+                <input name="calorieTargetOverride" type="number" min="1000" max="6000" placeholder="Optional" />
+              </label>
+              <label>
+                Protein override
+                <input name="proteinGOverride" type="number" min="30" max="350" placeholder="Optional" />
+              </label>
+              <label>
+                Budget
+                <select name="budgetLevel">
+                  <option value="lowest_cost">Lowest cost</option>
+                  <option value="balanced" selected>Balanced</option>
+                  <option value="premium">Premium</option>
+                </select>
+              </label>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="section-title">
+              <span>2</span>
+              <div>
+                <h2>Food preferences</h2>
+                <p>Plans avoid matching allergies and foods you exclude.</p>
+              </div>
+            </div>
+            <div class="grid grid-3">
+              <label>
+                Diet style
+                <select name="dietStyle">
+                  <option value="omnivore">Omnivore</option>
+                  <option value="vegetarian">Vegetarian</option>
+                  <option value="vegan">Vegan</option>
+                  <option value="pescatarian">Pescatarian</option>
+                </select>
+              </label>
+              <label>
+                Cooking skill
+                <select name="cookingSkill">
+                  <option value="no_cook">No cook</option>
+                  <option value="basic" selected>Basic</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="advanced">Advanced</option>
+                </select>
+              </label>
+              <label>
+                Equipment
+                <select name="equipment" multiple size="5">
+                  <option value="microwave" selected>Microwave</option>
+                  <option value="stove" selected>Stove</option>
+                  <option value="oven" selected>Oven</option>
+                  <option value="air_fryer">Air fryer</option>
+                  <option value="rice_cooker">Rice cooker</option>
+                  <option value="blender">Blender</option>
+                </select>
+              </label>
+              <label>
+                Allergies
+                <input name="allergies" placeholder="peanuts, shellfish" />
+              </label>
+              <label>
+                Avoid foods
+                <input name="avoidFoods" placeholder="tuna, eggs" />
+              </label>
+              <label>
+                Preferred foods
+                <input name="preferredFoods" placeholder="rice, chicken, berries" />
+              </label>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="section-title">
+              <span>3</span>
+              <div>
+                <h2>Location and stores</h2>
+                <p>Mock stores are normalized like Google Places, Kroger, and manual providers.</p>
+              </div>
+            </div>
+            <div class="grid grid-4">
+              <label class="grid-span-2">
+                City, ZIP, or address
+                <input name="locationQuery" value="Los Angeles, CA" />
+              </label>
+              <label>
+                Search query
+                <input name="storeQuery" placeholder="Asian grocery, cheap groceries" />
+              </label>
+              <label>
+                Radius
+                <div class="input-row">
+                  <input name="radiusMiles" type="number" min="1" max="25" value="5" />
+                  <span>mi</span>
+                </div>
+              </label>
+            </div>
+            <div class="actions">
+              <button type="button" class="secondary" id="findStoresBtn">Find stores</button>
+              <button type="button" class="secondary" id="useGpsBtn">Use GPS</button>
+              <button type="submit" class="primary">Generate plans</button>
+            </div>
+            <div id="storeResults" class="store-grid"></div>
+          </section>
+
+          <section class="panel disclaimer">
+            <label class="checkline">
+              <input name="healthConfirm" type="checkbox" required />
+              <span>
+                I understand this is nutrition planning software, not medical advice, and
+                medical diets should be supervised by a qualified professional.
+              </span>
+            </label>
+          </section>
+        </form>
+      </section>
+
+      <aside class="results">
+        <div class="sticky-results">
+          <section class="panel compact" id="macroPanel">
+            <h2>Macro targets</h2>
+            <div class="empty-state">Generate a plan to see estimated calories and macros.</div>
+          </section>
+
+          <section class="panel compact" id="planPanel">
+            <h2>Meal plan options</h2>
+            <div class="empty-state">Options will appear here with meals, prices, substitutions, and shopping lists.</div>
+          </section>
+        </div>
+      </aside>
+    </main>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>

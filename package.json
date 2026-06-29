@@ -1,0 +1,10 @@
+{
+  "name": "local-grocery-macro-meal-planner",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check src/app.js && node --check src/planner.js && node --check src/providers.js && node --check src/data.js && node --check src/macro.js",
+    "dev": "python3 -m http.server 5173"
+  }
+}
